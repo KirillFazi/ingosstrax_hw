@@ -2,6 +2,27 @@
 
 Python-агент на LangChain, который получает данные из Википедии о длине Большого Каменного моста и скорости животных, рассчитывает время пересечения и выполняет самопроверку результата. Поддерживает OpenRouter и Ollama, есть HTTP API и минимальный A2A-слой.
 
+## Быстрый старт
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env  # если есть, либо задайте AGENT_* переменные вручную
+
+# Запуск HTTP API (8000)
+uvicorn app.app:get_app --host 0.0.0.0 --port 8000
+
+# (опционально) Запуск A2A сервера (8001)
+python -m app.a2a_server
+```
+
+### Docker / Compose
+
+```bash
+docker compose up --build
+# поднимет два сервиса: api:8000 и a2a:8001
+```
+
 ## Архитектура
 
 ```text
@@ -119,6 +140,13 @@ uvicorn app.app:app --reload
 #      Question опционален, есть дефолтный запрос
 ```
 
+Через Docker Compose:
+
+```bash
+docker compose up --build api
+# GET http://localhost:8000/health
+```
+
 ### A2A сервер (официальный протокол)
 
 ```bash
@@ -227,6 +255,10 @@ pytest -m integration
 # С покрытием
 pytest --cov=app --cov-report=html
 ```
+
+Примечания:
+- `src/test_a2a_client.py` исключён из коллекции pytest (ручной интеграционный клиент для работающего A2A сервера).
+- `tests/test_diagnostics.py` помечен как `integration`; для полного прогона нужен `OPENROUTER_API_KEY` и доступ к сети.
 
 ## Ограничения и допущения
 
