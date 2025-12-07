@@ -1,0 +1,13 @@
+pydantic>=2
+pydantic-settings
+requests
+fastapi
+uvicorn
+langchain
+langchain-core
+langchain-community
+langchain-openai
+langchain-ollama
+pytest
+python-dotenv
+a2a-sdk[http-server]
